@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Posts</title>
+</head>
+<body>
+    
+    {% block posts %}
+        <div class="container">
+        {% for post in posts %}
+        
+        <div class="card col-4">
+            
+            {% if post.image %}
+            <img src="{{ post.image.url }}" alt="Post image" width="260px" height="260px">
+            {% endif %}
+            <p class="card-text"><a href="{% url 'post' post.id %}">{{ post.title }}</a></p>
+
+        </div>  
+        {% endfor %}
+        
+        <nav aria-label="...">
+                <ul class="pagination pagination-lg col-12" >
+                    {% if posts.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link" href="{% url 'posts' %}page/{{ posts.previous_page_number }}/" tabindex="-1">Previous</a>
+                  </li>
+                  {% else %}
+                  <li class="page-item">
+                        <a class="page-link" href="" tabindex="-1">Previous</a>
+                    </li>
+                    {% endif %}
+                  {% for page in posts.paginator.page_range %}
+                  {% if page == posts.number %}
+                  <li class="page-item"><a class="page-link" href="{% url 'posts' %}page/{{ page }}/">{{ page }}</a></li>
+                  {% else %}
+                  <li class="page-item"><a class="page-link" href="{% url 'posts' %}page/{{ page }}/">{{ page }}</a></li>
+                  {% endif %}
+                  {% endfor %}
+                  {% if posts.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="{% url 'posts' %}page/{{ posts.next_page_number }}/">Next</a>
+                  </li>
+                  {% else %}
+                  <li class="page-item">
+                        <a class="page-link" href="">Next</a>
+                    </li> 
+                {% endif %}   
+                </ul>
+        </nav>
+    
+    </div>
+        
+        
+    
+            
+    
+    
+    {% endblock  %}
+
+
+</body>
+</html>
+
+<!-- {% if post.likes == 1 %}
+                <p><a href="{% url 'add_like' post.id %}"><button>Like it</button></a>{{ post.likes }}</p>
+                {% else %}
+                <p><a href="{% url 'delete_like' post.id %}"><button>Unlike it</button></a>{{ post.likes }}</p>
+            {% endif %}
+-->
